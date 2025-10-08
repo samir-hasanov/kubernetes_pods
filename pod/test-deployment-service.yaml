@@ -4,7 +4,7 @@ metadata:
   name: test-deployment
   namespace: default
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: test-app
@@ -14,10 +14,10 @@ spec:
         app: test-app
     spec:
       containers:
-      - name: test-container
-        image: nginx:stable
-        ports:
-        - containerPort: 80
+        - name: test-container
+          image: nginx:stable
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -30,6 +30,6 @@ spec:
     app: test-app
   ports:
     - protocol: TCP
-      port: 80         # Service port
-      targetPort: 80   # Pod port
-      nodePort: 30080  # Node port (xaricd?n qo?ulmaq üçün)
+      port: 80 # Service port
+      targetPort: 80 # Pod port
+      nodePort: 30080 # Node port (xaricd?n qo?ulmaq ï¿½ï¿½ï¿½n)
