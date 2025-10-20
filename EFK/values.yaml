@@ -1,6 +1,6 @@
 kibana:
   extraEnvs:
     - name: ELASTICSEARCH_USERNAME
-      value: "elastic"
+      value: "kibana_system"
     - name: ELASTICSEARCH_PASSWORD
-      value: "Samir19921992"
+      value: "Samir19921994"
