@@ -51,7 +51,7 @@ spec:
             - name: discovery.type
               value: single-node
             - name: ELASTIC_PASSWORD
-              value: "Samir19921994" # <-- Elasticsearch parolu əlavə edildi
+              value: "Samir19921994"
 
 ---
 # =============================
@@ -97,9 +97,9 @@ spec:
             - name: ELASTICSEARCH_HOSTS
               value: http://elasticsearch:9200
             - name: ELASTICSEARCH_USERNAME
-              value: "kibana_system" # <-- Kibana user
+              value: "kibana_system"
             - name: ELASTICSEARCH_PASSWORD
-              value: "Samir19921994" # <-- Kibana password
+              value: "Samir19921994"
 
 ---
 # =============================
