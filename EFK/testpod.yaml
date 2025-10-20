@@ -50,6 +50,8 @@ spec:
           env:
             - name: discovery.type
               value: single-node
+            - name: ELASTIC_PASSWORD
+              value: "Samir19921994" # <-- Elasticsearch parolu əlavə edildi
 
 ---
 # =============================
@@ -94,6 +96,10 @@ spec:
           env:
             - name: ELASTICSEARCH_HOSTS
               value: http://elasticsearch:9200
+            - name: ELASTICSEARCH_USERNAME
+              value: "kibana_system" # <-- Kibana user
+            - name: ELASTICSEARCH_PASSWORD
+              value: "Samir19921994" # <-- Kibana password
 
 ---
 # =============================
