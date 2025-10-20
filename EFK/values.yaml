@@ -1,6 +1,17 @@
+# values.yaml
+
 kibana:
+  replicaCount: 1
+  # Verification code deaktiv etmək üçün istifadəçi/parolu göstəririk
   extraEnvs:
     - name: ELASTICSEARCH_USERNAME
       value: "kibana_system"
     - name: ELASTICSEARCH_PASSWORD
+      value: "Samir19921994"
+
+elasticsearch:
+  replicas: 1
+  # Elasticsearch default elastic istifadəçisi üçün parol
+  extraEnvs:
+    - name: ELASTIC_PASSWORD
       value: "Samir19921994"
