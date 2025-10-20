@@ -1,9 +1,115 @@
+# =============================
+# Namespace
+# =============================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: efk
+
+---
+# =============================
+# Elasticsearch Service
+# =============================
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: efk
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+    - port: 9200
+      targetPort: 9200
+
+---
+# =============================
+# Elasticsearch StatefulSet
+# =============================
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: efk
+spec:
+  serviceName: "elasticsearch"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - name: elasticsearch
+          image: docker.elastic.co/elasticsearch/elasticsearch:8.5.1
+          ports:
+            - containerPort: 9200
+          env:
+            - name: discovery.type
+              value: single-node
+
+---
+# =============================
+# Kibana Service
+# =============================
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  namespace: efk
+spec:
+  selector:
+    app: kibana
+  ports:
+    - port: 5601
+      targetPort: 5601
+
+---
+# =============================
+# Kibana Deployment
+# =============================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: efk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - name: kibana
+          image: docker.elastic.co/kibana/kibana:8.5.1
+          ports:
+            - containerPort: 5601
+          env:
+            - name: ELASTICSEARCH_HOSTS
+              value: http://elasticsearch:9200
+
+---
+# =============================
+# Test Pod (logger-test)
+# =============================
 apiVersion: v1
 kind: Pod
 metadata:
-  name: loggenerator
+  name: logger-test
+  namespace: efk
+  labels:
+    app: logger-test
 spec:
   containers:
-  - name: loggenerator
-    image: busybox
-    args: [/bin/sh, -c,'i=0; while true; do echo "Kubernetes Fundamentals $i"; i=$((i+1)); sleep 1; done']
+    - name: logger
+      image: busybox
+      command: ["/bin/sh", "-c"]
+      args:
+        - while true; do echo "$(date) Hello EFK Test" ; sleep 5 ; done
