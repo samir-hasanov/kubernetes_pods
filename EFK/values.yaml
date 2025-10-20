@@ -3,4 +3,4 @@ kibana:
     - name: ELASTICSEARCH_USERNAME
       value: "elastic"
     - name: ELASTICSEARCH_PASSWORD
-      value: "Samir1992@1992@"
+      value: "Samir19921992"
