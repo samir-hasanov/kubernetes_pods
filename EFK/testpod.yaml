@@ -130,8 +130,9 @@ data:
   fluent.conf: |
     <source>
       @type tail
-      path /var/log/containers/*.log
-      pos_file /fluentd/log/fluentd-containers.log.pos
+      # Docker Desktop üçün bütün pod loglarını oxu
+      path /var/log/pods/**/*.log
+      pos_file /fluentd/log/fluentd-pods.log.pos
       tag kube.*
       read_from_head true
       <parse>
@@ -198,6 +199,9 @@ spec:
             - name: varlibdockercontainers
               mountPath: /var/lib/docker/containers
               readOnly: true
+            - name: varlogpods
+              mountPath: /var/log/pods
+              readOnly: true
             - name: config-volume
               mountPath: /fluentd/etc
       volumes:
@@ -207,6 +211,9 @@ spec:
         - name: varlibdockercontainers
           hostPath:
             path: /var/lib/docker/containers
+        - name: varlogpods
+          hostPath:
+            path: /var/log/pods
         - name: config-volume
           configMap:
             name: fluentd-config
@@ -226,4 +233,4 @@ spec:
       image: busybox
       command: ["/bin/sh", "-c"]
       args:
-        - while true; do echo "$(date) Hello EFK Test" ; sleep 5 ; done
+        - while true; do echo "$(date) Hello EFK Test"; sleep 5; done
