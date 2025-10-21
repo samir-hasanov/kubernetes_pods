@@ -1,5 +1,5 @@
 # =============================
-# Namespace
+# Namespace (EFK üçün)
 # =============================
 apiVersion: v1
 kind: Namespace
@@ -119,7 +119,7 @@ spec:
 
 ---
 # =============================
-# Fluentd ConfigMap
+# Fluentd ConfigMap (bütün namespace-ləri oxuyur)
 # =============================
 apiVersion: v1
 kind: ConfigMap
@@ -130,7 +130,6 @@ data:
   fluent.conf: |
     <source>
       @type tail
-      # Docker Desktop üçün bütün pod loglarını oxu
       path /var/log/pods/**/*.log
       pos_file /fluentd/log/fluentd-pods.log.pos
       tag kube.*
@@ -145,7 +144,7 @@ data:
 
     <match kube.**>
       @type elasticsearch
-      host elasticsearch
+      host elasticsearch.efk.svc.cluster.local
       port 9200
       logstash_format true
       include_tag_key true
@@ -186,7 +185,7 @@ spec:
           image: fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch
           env:
             - name: FLUENT_ELASTICSEARCH_HOST
-              value: "elasticsearch"
+              value: "elasticsearch.efk.svc.cluster.local"
             - name: FLUENT_ELASTICSEARCH_PORT
               value: "9200"
           resources:
@@ -220,7 +219,7 @@ spec:
 
 ---
 # =============================
-# Test Pod (logger-test)
+# Test Pod (optional)
 # =============================
 apiVersion: v1
 kind: Pod
